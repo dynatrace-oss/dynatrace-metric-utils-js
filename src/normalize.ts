@@ -21,7 +21,6 @@ const DIMENSION_KEY_MAX_LENGTH = 100;
 const DIMENSION_VALUE_MAX_LENGTH = 250;
 
 const RE_DK_SECTION_START = /^[^a-z_]+/;
-const RE_DK_SECTION_END = /[^a-z0-9_:-]+$/;
 const RE_DK_INVALID_CHARACTERS = /[^a-z0-9_:-]+/g;
 
 const RE_DV_NON_CONTROL_CHARACTERS = /[\x00-\x1f]+/g;
@@ -123,18 +122,12 @@ function normalizeMetricKeyFirstSection(section: string): string {
 }
 
 function normalizeMetricKeySection(section: string): string {
-    return section
-    // Remove this to allow underscores at the start
-        .replace(/^[^a-zA-Z0-9_:-]+/, "")
-    // Remove this to allow underscores at the end
-        .replace(/[^a-zA-Z0-9_:-]+$/, "")
-        .replace(/[^a-zA-Z0-9_:-]+/g, "_");
+    return section.replace(/[^a-zA-Z0-9_:-]+/g, "_");
 }
 
 function normalizeDimensionKeySection(section: string): string {
     section = section.toLocaleLowerCase();
-    section = section.replace(RE_DK_SECTION_START, "");
-    section = section.replace(RE_DK_SECTION_END, "");
+    section = section.replace(RE_DK_SECTION_START, "_");
     section = section.replace(RE_DK_INVALID_CHARACTERS, "_");
     return section;
 }

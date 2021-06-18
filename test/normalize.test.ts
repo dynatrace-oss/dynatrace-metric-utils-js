@@ -65,27 +65,27 @@ describe("Normalization", () => {
             [".a.", null],
             ["___a", "___a"],
             ["a___", "a___"],
-            ["a$%@", "a"],
-            ["a.b$%@.c", "a.b.c"],
+            ["a$%@", "a_"],
+            ["a.b$%@.c", "a.b_.c"],
             ["a___b", "a___b"],
             ["._._._a_._._.", null],
             ["_._._.a_._", "_._._.a_._"],
             ["an..empty.section", "an.empty.section"],
             ["a,,,b  c=d\\e\\ =,f", "a_b_c_d_e_f"],
             ["a!b\"c#d$e%f&g'h(i)j*k+l,m-n.o/p:q;r<s=t>u?v@w[x]y\\z^0 1_2;3{4|5}6~7", "a_b_c_d_e_f_g_h_i_j_k_l_m-n.o_p:q_r_s_t_u_v_w_x_y_z_0_1_2_3_4_5_6_7"],
-            ["a.b.+", "a.b"],
+            ["a.b.+", "a.b._"],
             ["metric.key-number-1.001", "metric.key-number-1.001"],
             ["MyMetric", "MyMetric"],
             ["0MyMetric", "MyMetric"],
             ["mÄtric", "m_tric"],
-            ["metriÄ", "metri"],
+            ["metriÄ", "metri_"],
             ["Ätric", "tric"],
             ["meträääääÖÖÖc", "metr_c"]
         ];
 
         for (const [input, expected] of cases) {
             it(`should normalize ${input}`, () => {
-                assert.strictEqual(normalizeMetricKey(input), expected);
+                assert.strictEqual(normalizeMetricKey(input), expected, `Failed to normalize metric key ${input}`);
             });
         }
     });
@@ -94,7 +94,7 @@ describe("Normalization", () => {
         const cases: [string, string | null][] = [
             ["just.a.normal.key", "just.a.normal.key"],
             ["Case", "case"],
-            ["~0something", "something"],
+            ["~0something", "_something"],
             ["some~thing", "some_thing"],
             ["some~ä#thing", "some_thing"],
             ["asd", "asd"],
@@ -115,22 +115,22 @@ describe("Normalization", () => {
             ["dim:dim", "dim:dim"],
             ["dim_dim", "dim_dim"],
             ["dim-dim", "dim-dim"],
-            ["-dim", "dim"],
+            ["-dim", "_dim"],
             ["dim-", "dim-"],
             ["dim---", "dim---"],
-            ["~0#dim", "dim"],
-            ["---dim", "dim"],
-            [":dim", "dim"],
-            ["~@#ä", null],
-            ["aaa~@#ä", "aaa"],
+            ["~0#dim", "_dim"],
+            ["---dim", "_dim"],
+            [":dim", "_dim"],
+            ["~@#ä", "_"],
+            ["aaa~@#ä", "aaa_"],
             ["aaa___", "aaa___"],
-            ["000", null],
+            ["000", "_"],
             ["dim1.value1", "dim1.value1"],
-            ["dim.0dim", "dim.dim"],
-            ["dim.000", "dim"],
-            ["dim.~val", "dim.val"],
-            ["dim.val~~", "dim.val"],
-            ["dim.~~~", "dim"],
+            ["dim.0dim", "dim._dim"],
+            ["dim.000", "dim._"],
+            ["dim.~val", "dim._val"],
+            ["dim.val~~", "dim.val_"],
+            ["dim.~~~", "dim._"],
             ["dim._val", "dim._val"],
             ["dim.___", "dim.___"],
             ["dim.dim.dim.dim", "dim.dim.dim.dim"],
@@ -142,8 +142,8 @@ describe("Normalization", () => {
             [".", null],
             ["a...", "a"],
             [".a.", "a"],
-            ["   a", "a"],
-            ["a   ", "a"],
+            ["   a", "_a"],
+            ["a   ", "a_"],
             ["a b", "a_b"],
             ["a    b", "a_b"],
             ["", null],
@@ -151,18 +151,18 @@ describe("Normalization", () => {
             ["a,,,b  c=d\\e\\ =,f", "a_b_c_d_e_f"],
             ["a!b\"c#d$e%f&g'h(i)j*k+l,m-n.o/p:q;r<s=t>u?v@w[x]y\\z^0 1_2;3{4|5}6~7", "a_b_c_d_e_f_g_h_i_j_k_l_m-n.o_p:q_r_s_t_u_v_w_x_y_z_0_1_2_3_4_5_6_7"],
             ["Tag", "tag"],
-            ["0Tag", "tag"],
+            ["0Tag", "_tag"],
             ["tÄg", "t_g"],
             ["mytäääg", "myt_g"],
-            ["ääätag", "tag"],
-            ["ä_ätag", "__tag"],
+            ["ääätag", "_tag"],
+            ["ä_ätag", "___tag"],
             ["Bla___", "bla___"],
             [Array(120).fill("a").join(""), Array(100).fill("a").join("")]
         ];
 
         for (const [input, expected] of cases) {
             it(`should normalize ${input}`, () => {
-                assert.strictEqual(normalizeDimensionKey(input), expected);
+                assert.strictEqual(normalizeDimensionKey(input), expected, `Failed to normalize dimension key ${input}`);
             });
         }
     });
@@ -199,7 +199,7 @@ describe("Normalization", () => {
 
         for (const [input, expected] of cases) {
             it(`should normalize ${input}`, () => {
-                assert.strictEqual(normalizeDimensionValue(input), expected);
+                assert.strictEqual(normalizeDimensionValue(input), expected, `Failed to normalize dimension value ${input}`);
             });
         }
     });
