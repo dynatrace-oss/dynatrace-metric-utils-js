@@ -8,7 +8,7 @@
     "test": "nyc ts-mocha -p tsconfig.json 'test/**/*.test.ts'",
     "clean": "tsc --build --clean",
     "prepare": "npm run clean && npm run compile",
-    "lint": "eslint --ext ts src test",
+    "lint": "eslint --ext ts src test example",
     "lint:md": "markdownlint -i node_modules '**/*.md'",
     "check": "npm run prepare && npm run lint && npm run lint:md && npm t"
   },
