@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Dynatrace LLC
+Copyright 2021 Dynatrace LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ const cIndirectionFilename = "dt_metadata_e617c525669e072eebe3d0f08212e8f2.json"
 function readOneAgentMetadata(filename: string): Record<string, string> {
     const indirectionFileContents = readFileSync(filename).toString("utf-8").trim();
     if (indirectionFileContents === "") {
-        throw new Error("metadata file name is empty");
+        throw new Error("OneAgent indirection file is empty");
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return

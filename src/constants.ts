@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Dynatrace LLC
+Copyright 2021 Dynatrace LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-const DEFAULT_BASE_URL = "http://localhost:14499/metrics/ingest";
+const DEFAULT_ONEAGENT_ENDPOINT = "http://localhost:14499/metrics/ingest";
 const PAYLOAD_LINES_LIMIT = 1000;
 
 export function getDefaultOneAgentEndpoint(): string {
-    return DEFAULT_BASE_URL;
+    return DEFAULT_ONEAGENT_ENDPOINT;
 }
 
 export function getPayloadLinesLimit(): number {

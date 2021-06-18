@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Dynatrace LLC
+Copyright 2021 Dynatrace LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@ limitations under the License.
 
 import { Dimension } from "./metric";
 
-const DIMENSION_KEY_MAX_LENGTH = 100;
 const METRIC_KEY_MAX_LENGTH = 250;
+const DIMENSION_KEY_MAX_LENGTH = 100;
 const DIMENSION_VALUE_MAX_LENGTH = 250;
 
 const RE_DK_SECTION_START = /^[^a-z_]+/;
@@ -68,14 +68,14 @@ export function normalizeDimensionKey(key: string): string | null {
     return normalizedSections.length > 0 ? normalizedSections.join(".") : null;
 }
 
-export function normalizeDimensionValue(value: string): string | null {
+export function normalizeDimensionValue(value: string): string {
     // in JS, we could receive an unexpected type
     value = String(value);
     value = value.slice(0, DIMENSION_VALUE_MAX_LENGTH);
     value = removeControlCharacters(value);
     value = escapeCharacters(value);
     value = value.slice(0, DIMENSION_VALUE_MAX_LENGTH);
-    return ensureValidTrailingSlashes(value) || null;
+    return ensureValidTrailingSlashes(value);
 }
 
 export function normalizeDimensions(dimensions: Dimension[]): Dimension[] {
@@ -89,9 +89,6 @@ function normalizeDimension(dim: Dimension): Dimension | null {
     }
 
     const value = normalizeDimensionValue(dim.value);
-    if (!value) {
-        return null;
-    }
 
     return { key, value };
 }
@@ -122,7 +119,7 @@ function ensureValidTrailingSlashes(s: string): string {
 
 function normalizeMetricKeyFirstSection(section: string): string {
     // First section must start with a letter or underscore
-    return normalizeMetricKeySection(section.replace(/^[^a-zA-Z_]+/g, ""));
+    return normalizeMetricKeySection(section.replace(/^[^a-zA-Z_]+/, ""));
 }
 
 function normalizeMetricKeySection(section: string): string {

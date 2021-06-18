@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Dynatrace LLC
+Copyright 2021 Dynatrace LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -62,7 +62,8 @@ export class MetricFactory {
         if (!key) {
             return null;
         }
-        if (typeof value !== "number") {
+
+        if (typeof value !== "number" || !isFinite(value)) {
             return null;
         }
         return new TotalCounter(key, this._getDimensions(dimensions), value, timestamp);
@@ -80,7 +81,7 @@ export class MetricFactory {
         if (!key) {
             return null;
         }
-        if (typeof value !== "number") {
+        if (typeof value !== "number" || !isFinite(value)) {
             return null;
         }
         return new Counter(key, this._getDimensions(dimensions), value, timestamp);
@@ -88,7 +89,7 @@ export class MetricFactory {
 
     /**
      * Create a gauge with a prefixed and normalized key and normalized dimensions.
-     * Use a gauge when a value represents a measurement.
+     * Use a gauge when a value represents an observed measurement.
      * Returns null if key normalization fails to produce a valid metric key.
      * If no explicit timestamp is provided, the server will use the current time when
      * the metric is ingested.
@@ -98,7 +99,7 @@ export class MetricFactory {
         if (!key) {
             return null;
         }
-        if (typeof value !== "number") {
+        if (typeof value !== "number" || !isFinite(value)) {
             return null;
         }
         return new Gauge(key, this._getDimensions(dimensions), value, timestamp);
@@ -123,10 +124,10 @@ export class MetricFactory {
         const sum = value.sum;
 
         if (
-            typeof min !== "number" ||
-            typeof max !== "number" ||
-            typeof count !== "number" ||
-            typeof sum !== "number"
+            (typeof min !== "number" || !isFinite(min)) ||
+            (typeof max !== "number" || !isFinite(max)) ||
+            (typeof count !== "number" || !isFinite(count)) ||
+            (typeof sum !== "number" || !isFinite(sum))
         ) {
             return null;
         }
@@ -150,7 +151,6 @@ export class MetricFactory {
         return this._deduplicateDimensions([
             ...this._defaultDimensions,
             ...normalizeDimensions(dimensions),
-            { key: "dt.metrics.source", value: "opentelemetry" },
             ...this._staticDimensions
         ]);
     }

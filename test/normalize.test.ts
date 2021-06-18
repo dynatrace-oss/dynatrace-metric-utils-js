@@ -1,5 +1,5 @@
 /*
-Copyright 2020 Dynatrace LLC
+Copyright 2021 Dynatrace LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -170,7 +170,7 @@ describe("Normalization", () => {
     describe("Dimension Values", () => {
         const cases: [string, string | null][] = [
             ["value","value"],
-            ["",null],
+            ["",""],
             ["VALUE","VALUE"],
             ["a:3","a:3"],
             ["~@#ä","~@#ä"],
@@ -182,7 +182,7 @@ describe("Normalization", () => {
             ["\"\\ \"\"","\\\"\\\\\\ \\\"\\\""],
             ["key=\"value\"","key\\=\\\"value\\\""],
             ["\u0000a\u0007","a"],
-            ["\u0000\u0007",null],
+            ["\u0000\u0007",""],
             ["a\u0001b","a_b"],
             ["a\u0001\u0001\u0001b","a_b"],
             ["\u0034\u0066","\u0034\u0066"],
