@@ -22,7 +22,7 @@ export class TotalCounter extends BaseMetric<number> {
     }
 }
 
-export class DeltaCounter extends BaseMetric<number> {
+export class Counter extends BaseMetric<number> {
     protected serializeValue(): string {
         return `count,delta=${this.value}`;
     }

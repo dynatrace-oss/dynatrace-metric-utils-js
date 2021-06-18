@@ -20,14 +20,13 @@ import { getDefaultOneAgentEndpoint, getOneAgentMetadata, getPayloadLinesLimit, 
 
 const factory = new MetricFactory({
     defaultDimensions: [{ key: "this_is_a_key", value: "and its value" }],
-    oneAgentMetadata: getOneAgentMetadata(),
+    staticDimensions: getOneAgentMetadata(),
     prefix: "prefix"
 });
 
 const gauge = factory.createGauge("my_gauge", [{ key: "metric_dimension_key", value: "and value" }], 23, new Date());
-const deltaCounter = factory.createDeltaCounter("my_delta_counter", [{ key: "metric_dimension_key", value: "and value" }], 23, new Date());
-const totalCounter = factory.createTotalCounter("my_cumulative_counter", [{ key: "metric_dimension_key", value: "and value" }], 23, new Date());
-const summary = factory.createSummary("my_delta_counter", [{ key: "metric_dimension_key", value: "and value" }], { min: 3, max: 32, count: 12, sum: 53 }, new Date());
+const deltaCounter = factory.createCounter("my_counter", [{ key: "metric_dimension_key", value: "and value" }], 23, new Date());
+const summary = factory.createSummary("my_counter", [{ key: "metric_dimension_key", value: "and value" }], { min: 3, max: 32, count: 12, sum: 53 }, new Date());
 
 console.log("Dynatrace API Constants:");
 console.log(`Limit lines per payload:     ${getPayloadLinesLimit()}`);
@@ -44,12 +43,6 @@ if (deltaCounter == null) {
     console.error("deltaCounter normalization failed");
 } else {
     console.log(deltaCounter.serialize());
-}
-
-if (totalCounter == null) {
-    console.error("totalCounter normalization failed");
-} else {
-    console.log(totalCounter.serialize());
 }
 
 if (summary == null) {

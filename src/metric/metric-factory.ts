@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { normalizeDimensions, normalizeMetricKey } from "../normalize";
-import { DeltaCounter, TotalCounter } from "./counter";
+import { Counter, TotalCounter } from "./counter";
 import { Gauge } from "./gauge";
 import { Dimension, Metric } from "./types";
 import { Summary, SummaryValue } from "./summary";
@@ -23,13 +23,13 @@ import { Summary, SummaryValue } from "./summary";
 export interface MetricFactoryOptions {
     prefix?: string;
     defaultDimensions?: Dimension[];
-    oneAgentMetadata?: Dimension[];
+    staticDimensions?: Dimension[];
 }
 
 export class MetricFactory {
     private _prefix?: string;
     private _defaultDimensions: Dimension[];
-    private _oneAgentMetadata: Dimension[];
+    private _staticDimensions: Dimension[];
 
     /**
      * Return a new Metric Factory. If default dimensions are provided, they will be normalized.
@@ -41,7 +41,7 @@ export class MetricFactory {
                 options?.defaultDimensions ?? []
             )
         );
-        this._oneAgentMetadata = options?.oneAgentMetadata ?? [];
+        this._staticDimensions = options?.staticDimensions ?? [];
     }
 
     /**
@@ -75,7 +75,7 @@ export class MetricFactory {
      * If no explicit timestamp is provided, the server will use the current time when
      * the metric is ingested.
      */
-    public createDeltaCounter(name: string, dimensions: Dimension[], value: number, timestamp?: Date): Metric | null {
+    public createCounter(name: string, dimensions: Dimension[], value: number, timestamp?: Date): Metric | null {
         const key = normalizeMetricKey(this._getKey(name));
         if (!key) {
             return null;
@@ -83,7 +83,7 @@ export class MetricFactory {
         if (typeof value !== "number") {
             return null;
         }
-        return new DeltaCounter(key, this._getDimensions(dimensions), value, timestamp);
+        return new Counter(key, this._getDimensions(dimensions), value, timestamp);
     }
 
     /**
@@ -151,7 +151,7 @@ export class MetricFactory {
             ...this._defaultDimensions,
             ...normalizeDimensions(dimensions),
             { key: "dt.metrics.source", value: "opentelemetry" },
-            ...this._oneAgentMetadata
+            ...this._staticDimensions
         ]);
     }
 

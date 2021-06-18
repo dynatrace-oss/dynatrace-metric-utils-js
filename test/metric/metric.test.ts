@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import * as assert from "assert";
-import { TotalCounter, DeltaCounter, Gauge, Summary } from "../../src/metric";
+import { TotalCounter, Counter, Gauge, Summary } from "../../src/metric";
 
 const testDate = new Date(1624028522292);
 
@@ -26,9 +26,9 @@ describe("Metric", () => {
             assert.strictEqual(ctr.serialize(), "key count,1 1624028522292");
         });
     });
-    describe("DeltaCounter", () => {
+    describe("Counter", () => {
         it("should serialize a value", () => {
-            const ctr = new DeltaCounter("key", [], 1, testDate);
+            const ctr = new Counter("key", [], 1, testDate);
             assert.strictEqual(ctr.serialize(), "key count,delta=1 1624028522292");
         });
     });

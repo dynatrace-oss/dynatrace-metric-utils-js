@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import * as assert from "assert";
-import { DeltaCounter, Gauge, MetricFactory, Summary, TotalCounter } from "../../src/metric";
+import { Counter, Gauge, MetricFactory, Summary, TotalCounter } from "../../src/metric";
 
 describe("MetricFactory", () => {
     let factory: MetricFactory;
@@ -31,8 +31,8 @@ describe("MetricFactory", () => {
     });
 
     it("should create a delta counter", () => {
-        const metric = factory.createDeltaCounter("counter_name", [], 25, now);
-        assert.ok(metric instanceof DeltaCounter);
+        const metric = factory.createCounter("counter_name", [], 25, now);
+        assert.ok(metric instanceof Counter);
     });
 
     it("should create a gauge", () => {
@@ -47,7 +47,7 @@ describe("MetricFactory", () => {
 
     it("should serialize metrics", () => {
         const cnt = factory.createTotalCounter("name", [], 25, now);
-        const dcnt = factory.createDeltaCounter("name", [], 25, now);
+        const dcnt = factory.createCounter("name", [], 25, now);
         const gauge = factory.createGauge("name", [], 25, now);
         const summary = factory.createSummary("name", [], { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -59,7 +59,7 @@ describe("MetricFactory", () => {
 
     it("should serialize metrics without timestamps", () => {
         const cnt = factory.createTotalCounter("name", [], 25);
-        const dcnt = factory.createDeltaCounter("name", [], 25);
+        const dcnt = factory.createCounter("name", [], 25);
         const gauge = factory.createGauge("name", [], 25);
         const summary = factory.createSummary("name", [], { min: 1, max: 10, sum: 34, count: 42 });
 
@@ -71,7 +71,7 @@ describe("MetricFactory", () => {
 
     it("should not create metrics with invalid names", () => {
         const cnt = factory.createTotalCounter("", [], 25, now);
-        const dcnt = factory.createDeltaCounter("", [], 25, now);
+        const dcnt = factory.createCounter("", [], 25, now);
         const gauge = factory.createGauge("", [], 25, now);
         const summary = factory.createSummary("", [], { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -85,7 +85,7 @@ describe("MetricFactory", () => {
         // @ts-expect-error invalid values should return null metrics
         const cnt = factory.createTotalCounter("name", [], true, now);
         // @ts-expect-error invalid values should return null metrics
-        const dcnt = factory.createDeltaCounter("name", [], true, now);
+        const dcnt = factory.createCounter("name", [], true, now);
         // @ts-expect-error invalid values should return null metrics
         const gauge = factory.createGauge("name", [], true, now);
         // @ts-expect-error invalid values should return null metrics
@@ -103,7 +103,7 @@ describe("MetricFactory", () => {
         ];
 
         const cnt = factory.createTotalCounter("name", dims, 25, now);
-        const dcnt = factory.createDeltaCounter("name", dims, 25, now);
+        const dcnt = factory.createCounter("name", dims, 25, now);
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -120,7 +120,7 @@ describe("MetricFactory", () => {
         ];
 
         const cnt = factory.createTotalCounter("name", dims, 25, now);
-        const dcnt = factory.createDeltaCounter("name", dims, 25, now);
+        const dcnt = factory.createCounter("name", dims, 25, now);
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -137,7 +137,7 @@ describe("MetricFactory", () => {
         ];
 
         const cnt = factory.createTotalCounter("name", dims, 25, now);
-        const dcnt = factory.createDeltaCounter("name", dims, 25, now);
+        const dcnt = factory.createCounter("name", dims, 25, now);
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -154,7 +154,7 @@ describe("MetricFactory", () => {
         ];
 
         const cnt = factory.createTotalCounter("name", dims, 25, now);
-        const dcnt = factory.createDeltaCounter("name", dims, 25, now);
+        const dcnt = factory.createCounter("name", dims, 25, now);
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -171,7 +171,7 @@ describe("MetricFactory", () => {
         ];
 
         const cnt = factory.createTotalCounter("name", dims, 25, now);
-        const dcnt = factory.createDeltaCounter("name", dims, 25, now);
+        const dcnt = factory.createCounter("name", dims, 25, now);
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -188,7 +188,7 @@ describe("MetricFactory", () => {
 
         it("should serialize metrics", () => {
             const cnt = factory.createTotalCounter("name", [], 25, now);
-            const dcnt = factory.createDeltaCounter("name", [], 25, now);
+            const dcnt = factory.createCounter("name", [], 25, now);
             const gauge = factory.createGauge("name", [], 25, now);
             const summary = factory.createSummary("name", [], { min: 1, max: 10, sum: 34, count: 42 }, now);
 
@@ -206,7 +206,7 @@ describe("MetricFactory", () => {
 
         it("should serialize metrics", () => {
             const cnt = factory.createTotalCounter("name", [], 25, now);
-            const dcnt = factory.createDeltaCounter("name", [], 25, now);
+            const dcnt = factory.createCounter("name", [], 25, now);
             const gauge = factory.createGauge("name", [], 25, now);
             const summary = factory.createSummary("name", [], { min: 1, max: 10, sum: 34, count: 42 }, now);
 
