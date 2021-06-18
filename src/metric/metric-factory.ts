@@ -56,7 +56,7 @@ export class MetricFactory {
         name: string,
         dimensions: Dimension[],
         value: number,
-        timestamp?: number
+        timestamp?: Date
     ): Metric | null {
         const key = normalizeMetricKey(this._getKey(name));
         if (!key) {
@@ -75,7 +75,7 @@ export class MetricFactory {
      * If no explicit timestamp is provided, the server will use the current time when
      * the metric is ingested.
      */
-    public createDeltaCounter(name: string, dimensions: Dimension[], value: number, timestamp?: number): Metric | null {
+    public createDeltaCounter(name: string, dimensions: Dimension[], value: number, timestamp?: Date): Metric | null {
         const key = normalizeMetricKey(this._getKey(name));
         if (!key) {
             return null;
@@ -93,7 +93,7 @@ export class MetricFactory {
      * If no explicit timestamp is provided, the server will use the current time when
      * the metric is ingested.
      */
-    public createGauge(name: string, dimensions: Dimension[], value: number, timestamp?: number): Metric | null {
+    public createGauge(name: string, dimensions: Dimension[], value: number, timestamp?: Date): Metric | null {
         const key = normalizeMetricKey(this._getKey(name));
         if (!key) {
             return null;
@@ -111,7 +111,7 @@ export class MetricFactory {
      * If no explicit timestamp is provided, the server will use the current time when
      * the metric is ingested.
      */
-    public createSummary(name: string, dimensions: Dimension[], value: SummaryValue, timestamp?: number): Metric | null {
+    public createSummary(name: string, dimensions: Dimension[], value: SummaryValue, timestamp?: Date): Metric | null {
         const key = normalizeMetricKey(this._getKey(name));
         if (!key) {
             return null;

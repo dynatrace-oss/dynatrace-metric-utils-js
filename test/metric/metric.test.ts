@@ -17,29 +17,31 @@ limitations under the License.
 import * as assert from "assert";
 import { TotalCounter, DeltaCounter, Gauge, Summary } from "../../src/metric";
 
+const testDate = new Date(1624028522292);
+
 describe("Metric", () => {
     describe("TotalCounter", () => {
         it("should serialize a value", () => {
-            const ctr = new TotalCounter("key", [], 1, 80);
-            assert.strictEqual(ctr.serialize(), "key count,1 80");
+            const ctr = new TotalCounter("key", [], 1, testDate);
+            assert.strictEqual(ctr.serialize(), "key count,1 1624028522292");
         });
     });
     describe("DeltaCounter", () => {
         it("should serialize a value", () => {
-            const ctr = new DeltaCounter("key", [], 1, 80);
-            assert.strictEqual(ctr.serialize(), "key count,delta=1 80");
+            const ctr = new DeltaCounter("key", [], 1, testDate);
+            assert.strictEqual(ctr.serialize(), "key count,delta=1 1624028522292");
         });
     });
     describe("Gauge", () => {
         it("should serialize a value", () => {
-            const ctr = new Gauge("key", [], 1, 80);
-            assert.strictEqual(ctr.serialize(), "key gauge,1 80");
+            const ctr = new Gauge("key", [], 1, testDate);
+            assert.strictEqual(ctr.serialize(), "key gauge,1 1624028522292");
         });
     });
     describe("Summary", () => {
         it("should serialize a value", () => {
-            const ctr = new Summary("key", [], { min: 1, max: 10, sum: 34, count: 42 }, 80);
-            assert.strictEqual(ctr.serialize(), "key gauge,min=1,max=10,sum=34,count=42 80");
+            const ctr = new Summary("key", [], { min: 1, max: 10, sum: 34, count: 42 }, testDate);
+            assert.strictEqual(ctr.serialize(), "key gauge,min=1,max=10,sum=34,count=42 1624028522292");
         });
     });
 });

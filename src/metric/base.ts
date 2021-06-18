@@ -20,9 +20,9 @@ export abstract class BaseMetric<T> implements Metric {
     protected key: string;
     protected dimensions: Dimension[];
     protected value: T;
-    protected timestamp?: number;
+    protected timestamp?: Date;
 
-    constructor(key: string, dimensions: Dimension[], value: T, timestamp?: number) {
+    constructor(key: string, dimensions: Dimension[], value: T, timestamp?: Date) {
         this.key = key;
         this.dimensions = dimensions;
         this.value = value;
@@ -38,7 +38,7 @@ export abstract class BaseMetric<T> implements Metric {
         line = `${line} ${this.serializeValue()}`;
 
         if (this.timestamp != null) {
-            line = `${line} ${this.timestamp}`;
+            line = `${line} ${this.timestamp.valueOf()}`;
         }
 
         return line;

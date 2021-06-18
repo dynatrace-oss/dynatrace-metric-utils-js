@@ -19,7 +19,7 @@ import { DeltaCounter, Gauge, MetricFactory, Summary, TotalCounter } from "../..
 
 describe("MetricFactory", () => {
     let factory: MetricFactory;
-    const now = Date.now();
+    const now = new Date();
 
     before(() => {
         factory = new MetricFactory();
@@ -51,10 +51,10 @@ describe("MetricFactory", () => {
         const gauge = factory.createGauge("name", [], 25, now);
         const summary = factory.createSummary("name", [], { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-        assert.strictEqual(cnt?.serialize(), `name,dt.metrics.source=opentelemetry count,25 ${now}`);
-        assert.strictEqual(dcnt?.serialize(), `name,dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-        assert.strictEqual(gauge?.serialize(), `name,dt.metrics.source=opentelemetry gauge,25 ${now}`);
-        assert.strictEqual(summary?.serialize(), `name,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+        assert.strictEqual(cnt?.serialize(), `name,dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+        assert.strictEqual(dcnt?.serialize(), `name,dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+        assert.strictEqual(gauge?.serialize(), `name,dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+        assert.strictEqual(summary?.serialize(), `name,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
     });
 
     it("should serialize metrics without timestamps", () => {
@@ -107,10 +107,10 @@ describe("MetricFactory", () => {
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-        assert.strictEqual(cnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,25 ${now}`);
-        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-        assert.strictEqual(gauge?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,25 ${now}`);
-        assert.strictEqual(summary?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+        assert.strictEqual(cnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+        assert.strictEqual(gauge?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+        assert.strictEqual(summary?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
     });
 
     it("should skip dimensions with invalid keys", () => {
@@ -124,10 +124,10 @@ describe("MetricFactory", () => {
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-        assert.strictEqual(cnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,25 ${now}`);
-        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-        assert.strictEqual(gauge?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,25 ${now}`);
-        assert.strictEqual(summary?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+        assert.strictEqual(cnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+        assert.strictEqual(gauge?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+        assert.strictEqual(summary?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
     });
 
     it("should normalize dimension keys", () => {
@@ -141,10 +141,10 @@ describe("MetricFactory", () => {
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-        assert.strictEqual(cnt?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry count,25 ${now}`);
-        assert.strictEqual(dcnt?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-        assert.strictEqual(gauge?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry gauge,25 ${now}`);
-        assert.strictEqual(summary?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+        assert.strictEqual(cnt?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+        assert.strictEqual(dcnt?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+        assert.strictEqual(gauge?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+        assert.strictEqual(summary?.serialize(), `name,dim=value,n_rmalize=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
     });
 
     it("should skip dimensions with invalid values", () => {
@@ -158,10 +158,10 @@ describe("MetricFactory", () => {
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-        assert.strictEqual(cnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,25 ${now}`);
-        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-        assert.strictEqual(gauge?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,25 ${now}`);
-        assert.strictEqual(summary?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+        assert.strictEqual(cnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+        assert.strictEqual(gauge?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+        assert.strictEqual(summary?.serialize(), `name,dim=value,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
     });
 
     it("should normalize and escape dimension values", () => {
@@ -175,10 +175,10 @@ describe("MetricFactory", () => {
         const gauge = factory.createGauge("name", dims, 25, now);
         const summary = factory.createSummary("name", dims, { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-        assert.strictEqual(cnt?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry count,25 ${now}`);
-        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-        assert.strictEqual(gauge?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry gauge,25 ${now}`);
-        assert.strictEqual(summary?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+        assert.strictEqual(cnt?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+        assert.strictEqual(dcnt?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+        assert.strictEqual(gauge?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+        assert.strictEqual(summary?.serialize(), `name,dim=value,dim2=a_b\\"quoted\\",dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
     });
 
     describe("with prefix", () => {
@@ -192,10 +192,10 @@ describe("MetricFactory", () => {
             const gauge = factory.createGauge("name", [], 25, now);
             const summary = factory.createSummary("name", [], { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-            assert.strictEqual(cnt?.serialize(), `prefix.name,dt.metrics.source=opentelemetry count,25 ${now}`);
-            assert.strictEqual(dcnt?.serialize(), `prefix.name,dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-            assert.strictEqual(gauge?.serialize(), `prefix.name,dt.metrics.source=opentelemetry gauge,25 ${now}`);
-            assert.strictEqual(summary?.serialize(), `prefix.name,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+            assert.strictEqual(cnt?.serialize(), `prefix.name,dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+            assert.strictEqual(dcnt?.serialize(), `prefix.name,dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+            assert.strictEqual(gauge?.serialize(), `prefix.name,dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+            assert.strictEqual(summary?.serialize(), `prefix.name,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
         });
     });
 
@@ -210,10 +210,10 @@ describe("MetricFactory", () => {
             const gauge = factory.createGauge("name", [], 25, now);
             const summary = factory.createSummary("name", [], { min: 1, max: 10, sum: 34, count: 42 }, now);
 
-            assert.strictEqual(cnt?.serialize(), `name,default=val,dt.metrics.source=opentelemetry count,25 ${now}`);
-            assert.strictEqual(dcnt?.serialize(), `name,default=val,dt.metrics.source=opentelemetry count,delta=25 ${now}`);
-            assert.strictEqual(gauge?.serialize(), `name,default=val,dt.metrics.source=opentelemetry gauge,25 ${now}`);
-            assert.strictEqual(summary?.serialize(), `name,default=val,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now}`);
+            assert.strictEqual(cnt?.serialize(), `name,default=val,dt.metrics.source=opentelemetry count,25 ${now.valueOf()}`);
+            assert.strictEqual(dcnt?.serialize(), `name,default=val,dt.metrics.source=opentelemetry count,delta=25 ${now.valueOf()}`);
+            assert.strictEqual(gauge?.serialize(), `name,default=val,dt.metrics.source=opentelemetry gauge,25 ${now.valueOf()}`);
+            assert.strictEqual(summary?.serialize(), `name,default=val,dt.metrics.source=opentelemetry gauge,min=1,max=10,sum=34,count=42 ${now.valueOf()}`);
         });
     });
 });
