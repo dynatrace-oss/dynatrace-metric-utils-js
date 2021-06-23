@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { normalizeDimensions, normalizeMetricKey } from "../normalize";
-import { Counter, TotalCounter } from "./counter";
+import { Counter } from "./counter";
 import { Gauge } from "./gauge";
 import { Dimension, Metric } from "./types";
 import { Summary, SummaryValue } from "./summary";
@@ -42,31 +42,6 @@ export class MetricFactory {
             )
         );
         this._staticDimensions = options?.staticDimensions ?? [];
-    }
-
-    /**
-     * Create a total counter with a prefixed and normalized key and normalized dimensions.
-     * Use a total counter when a value represents the total value of a count.
-     * Returns null if key normalization fails to produce a valid metric key.
-     * If no explicit timestamp is provided, the server will use the current time when
-     * the metric is ingested.
-     *
-     */
-    public createTotalCounter(
-        name: string,
-        dimensions: Dimension[],
-        value: number,
-        timestamp?: Date
-    ): Metric | null {
-        const key = normalizeMetricKey(this._getKey(name));
-        if (!key) {
-            return null;
-        }
-
-        if (typeof value !== "number" || !isFinite(value)) {
-            return null;
-        }
-        return new TotalCounter(key, this._getDimensions(dimensions), value, timestamp);
     }
 
     /**
