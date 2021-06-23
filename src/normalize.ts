@@ -20,6 +20,8 @@ const METRIC_KEY_MAX_LENGTH = 250;
 const DIMENSION_KEY_MAX_LENGTH = 100;
 const DIMENSION_VALUE_MAX_LENGTH = 250;
 
+const RE_MK_SECTION_START = /[^a-zA-Z0-9_:-]+/g;
+
 const RE_DK_SECTION_START = /^[^a-z_]+/;
 const RE_DK_INVALID_CHARACTERS = /[^a-z0-9_:-]+/g;
 
@@ -36,12 +38,6 @@ const CHARS_TO_ESCAPE = new Set([
 ]);
 
 export function normalizeMetricKey(name: string): string | null {
-    /*
-    * identifier : first_identifier_section ( '.' identifier_section )*
-    * first_identifier_section : ( [a-z] | [A-Z] ) ( [a-z] | [A-Z] | [0-9] | [_-] )*
-    * identifier_section: ( [a-z] | [A-Z] | [0-9] ) ( [a-z] | [A-Z] | [0-9] | [_-] )*
-    */
-
     const sections = name.slice(0, METRIC_KEY_MAX_LENGTH).split(".");
     const first = normalizeMetricKeyFirstSection(sections.shift()!);
     if (!first) {
@@ -122,7 +118,7 @@ function normalizeMetricKeyFirstSection(section: string): string {
 }
 
 function normalizeMetricKeySection(section: string): string {
-    return section.replace(/[^a-zA-Z0-9_:-]+/g, "_");
+    return section.replace(RE_MK_SECTION_START, "_");
 }
 
 function normalizeDimensionKeySection(section: string): string {
