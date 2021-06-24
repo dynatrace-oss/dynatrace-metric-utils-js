@@ -20,14 +20,13 @@ const METRIC_KEY_MAX_LENGTH = 250;
 const DIMENSION_KEY_MAX_LENGTH = 100;
 const DIMENSION_VALUE_MAX_LENGTH = 250;
 
-const RE_MK_SECTION_START = /[^a-zA-Z0-9_:-]+/g;
+const RE_MK_FIRST_SECTION_INVALID_START_RANGE = /^[^a-z_]+/i;
+const RE_MK_SECTION_INVALID_RANGE = /[^a-z0-9_-]+/ig;
 
-const RE_DK_SECTION_START = /^[^a-z_]+/;
-const RE_DK_INVALID_CHARACTERS = /[^a-z0-9_:-]+/g;
+const RE_DK_INVALID_SECTION_START_RANGE = /^[^a-z_]+/;
+const RE_DK_INVALID_CHARACTER_RANGE = /[^a-z0-9_:-]+/g;
 
-const RE_DV_NON_CONTROL_CHARACTERS = /[\x00-\x1f]+/g;
-const RE_DV_NON_CONTROL_CHARACTERS_START = /^[\x00-\x1f]+/;
-const RE_DV_NON_CONTROL_CHARACTERS_END = /[\x00-\x1f]+$/;
+const RE_DV_NON_CONTROL_CHARACTERS_RANGE = /[\x00-\x1f]+/g;
 
 const CHARS_TO_ESCAPE = new Set([
     "=",
@@ -89,9 +88,7 @@ function normalizeDimension(dim: Dimension): Dimension | null {
 }
 
 function removeControlCharacters(s: string): string {
-    s = s.replace(RE_DV_NON_CONTROL_CHARACTERS_START, "");
-    s = s.replace(RE_DV_NON_CONTROL_CHARACTERS_END, "");
-    s = s.replace(RE_DV_NON_CONTROL_CHARACTERS, "_");
+    s = s.replace(RE_DV_NON_CONTROL_CHARACTERS_RANGE, "_");
     return s;
 }
 
@@ -114,17 +111,17 @@ function ensureValidTrailingSlashes(s: string): string {
 
 function normalizeMetricKeyFirstSection(section: string): string {
     // First section must start with a letter or underscore
-    return normalizeMetricKeySection(section.replace(/^[^a-zA-Z_]+/, ""));
+    return normalizeMetricKeySection(section.replace(RE_MK_FIRST_SECTION_INVALID_START_RANGE, "_"));
 }
 
 function normalizeMetricKeySection(section: string): string {
-    return section.replace(RE_MK_SECTION_START, "_");
+    return section.replace(RE_MK_SECTION_INVALID_RANGE, "_");
 }
 
 function normalizeDimensionKeySection(section: string): string {
     section = section.toLocaleLowerCase();
-    section = section.replace(RE_DK_SECTION_START, "_");
-    section = section.replace(RE_DK_INVALID_CHARACTERS, "_");
+    section = section.replace(RE_DK_INVALID_SECTION_START_RANGE, "_");
+    section = section.replace(RE_DK_INVALID_CHARACTER_RANGE, "_");
     return section;
 }
 
