@@ -19,10 +19,10 @@ import { Dimension } from "./metric";
 
 const cIndirectionFilename = "dt_metadata_e617c525669e072eebe3d0f08212e8f2.json";
 
-function readOneAgentMetadata(filename: string): Record<string, string> {
-    const indirectionFileContents = readFileSync(filename).toString("utf-8").trim();
+function readDynatraceMetadata(): Record<string, string> {
+    const indirectionFileContents = readFileSync(cIndirectionFilename).toString("utf-8").trim();
     if (indirectionFileContents === "") {
-        throw new Error("OneAgent indirection file is empty");
+        throw new Error("Dynatrace indirection file is empty");
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -30,16 +30,15 @@ function readOneAgentMetadata(filename: string): Record<string, string> {
 }
 
 /**
- * Return a list of dimensions from the OneAgent to attach to every metric.
+ * Return a list of dimensions from Dynatrace to attach to every metric.
  * This function performs synchronous I/O so should only be called once
  * and cached if possible.
  *
- * @returns list of dimensions from OneAgent
+ * @returns list of dimensions from Dynatrace
  */
-export function getOneAgentMetadata(): Dimension[];
-export function getOneAgentMetadata(_testFilename?: string): Dimension[] {
+export function getDynatraceMetadata(): Dimension[] {
     try {
-        return Object.entries(readOneAgentMetadata(_testFilename ?? cIndirectionFilename))
+        return Object.entries(readDynatraceMetadata())
             .map(([key, value]) => ({ key, value }));
     } catch {
         return [];

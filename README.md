@@ -2,6 +2,14 @@
 
 JavaScript utility for preparing communication with the [Dynatrace Metrics API v2](https://www.dynatrace.com/support/help/dynatrace-api/environment-api/metric-v2/).
 
+## Installation
+
+The library may be built from source or installed from NPM by running:
+
+```shell
+npm install @dynatrace/metric-utils
+```
+
 ## Usage
 
 An example for how to use this library can be found in [example/index.ts](example/index.ts).
@@ -19,21 +27,21 @@ const factory = new MetricFactory(options);
 const gauge = factory.createGauge("my_gauge", dimensions, value, date);
 ```
 
-See a list of constructor options below.
+See a list of constructor options [below](#constructor-options).
 
 #### Metric Creation Methods
 
 There are three methods to create metrics. Each takes a name, dimension list, value, and an optional date. They return a `Metric` or `undefined`. When a metric is created, its name and dimensions are normalized for ingestion by the Dynatrace Metrics API v2. If a metric cannot be normalized, it will be `undefined`.
 
-- `createGauge`
-- `createCounter`
-- `createSummary`
+- `createGauge` - A single value serialized as `gauge,<value>`
+- `createCounter` - A single value serialized as `count,delta=<value>`
+- `createSummary` - A summary of multiple values serialized as `gauge,min=<min>,max=<max>,sum=<sum>,count=<count>`
 
 Every metric is serializable using its `metric.serialize()` method, which returns a string. This string can be ingested by the Dynatrace Metrics API v2.
 
-### OneAgent Enrichment
+### Dynatrace Enrichment
 
-When run on a host which has an active OneAgent, the exported function `getOneAgentMetadata` will return a list of dimensions provided by the OneAgent. If no OneAgent is running on the host or the process is not monitored by the OneAgent, it will return an empty list.
+When run on a host which has an active OneAgent, the exported function `getDyntraceMetadata` will return a list of dimensions provided by Dynatrace. If no metadata is found, it will return an empty list.
 
 ### Common constants
 
@@ -49,7 +57,6 @@ Currently available constants are:
 
 * the default [local OneAgent metric API](https://www.dynatrace.com/support/help/how-to-use-dynatrace/metrics/metric-ingestion/ingestion-methods/local-api/) endpoint (`getDefaultOneAgentEndpoint()`)
 * the limit for how many metric lines can be ingested in one request (`getPayloadLinesLimit()`)
-
 
 ### Constructor Options
 
@@ -67,7 +74,6 @@ const metric = factory.createGauge("my_gauge", [], 10);
 console.log(metric.serialize());
 // my_prefix.my_gauge 10
 ```
-
 
 #### `defaultDimensions: Dimension[]`
 

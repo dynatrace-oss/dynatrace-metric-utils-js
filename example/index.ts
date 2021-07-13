@@ -16,11 +16,11 @@ limitations under the License.
 
 /* eslint-disable no-console */
 
-import { getDefaultOneAgentEndpoint, getOneAgentMetadata, getPayloadLinesLimit, MetricFactory } from "../src";
+import { getDefaultOneAgentEndpoint, getDynatraceMetadata, getPayloadLinesLimit, MetricFactory } from "../src";
 
 const factory = new MetricFactory({
     defaultDimensions: [{ key: "this_is_a_key", value: "and its value" }],
-    staticDimensions: getOneAgentMetadata(),
+    staticDimensions: getDynatraceMetadata(),
     prefix: "prefix"
 });
 

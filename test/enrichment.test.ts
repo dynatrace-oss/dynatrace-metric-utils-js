@@ -14,51 +14,70 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { getOneAgentMetadata } from "../src/enrichment";
+import { getDynatraceMetadata } from "../src/enrichment";
 import * as mock from "mock-fs";
 import * as assert from "assert";
 
 describe("Enrichment", () => {
-    before(() => {
-        mock({
-            "empty_indirection.json": "",
-
-            "indirection_to_missing.json": "missing.json",
-            "indirection_to_invalid.json": "invalid.json",
-            "indirection_to_valid.json": "valid.json",
-
-            "empty.json": "",
-            "invalid.json": "this is not valid json",
-            "valid.json": JSON.stringify({ property1: "value1" })
-        });
-    });
-
-    after(() => {
+    afterEach(() => {
         mock.restore();
     });
 
-    it("should not crash if the indirection file does not exist", () => {
-        //@ts-expect-error shouldn't be allowed to pass a file name 🤫
-        assert.deepStrictEqual(getOneAgentMetadata("file_not_exist"), []);
+    describe("when indirection file does not exist", () => {
+        it("should not crash", () => {
+            assert.deepStrictEqual(getDynatraceMetadata(), []);
+        });
     });
 
-    it("should not crash if the indirection file is empty", () => {
-        //@ts-expect-error shouldn't be allowed to pass a file name 🤫
-        assert.deepStrictEqual(getOneAgentMetadata("empty_indirection.json"), []);
+    describe("when indirection file is empty", () => {
+        beforeEach(() => {
+            mock({
+                "dt_metadata_e617c525669e072eebe3d0f08212e8f2.json": ""
+            });
+        });
+
+        it("should not crash", () => {
+            assert.deepStrictEqual(getDynatraceMetadata(), []);
+        });
     });
 
-    it("should not crash if the indirection file points to missing file", () => {
-        //@ts-expect-error shouldn't be allowed to pass a file name 🤫
-        assert.deepStrictEqual(getOneAgentMetadata("indirection_to_missing.json"), []);
+
+    describe("when the indirection points to a missing file", () => {
+        beforeEach(() => {
+            mock({
+                "dt_metadata_e617c525669e072eebe3d0f08212e8f2.json": "missing.json"
+            });
+        });
+
+        it("should not crash", () => {
+            assert.deepStrictEqual(getDynatraceMetadata(), []);
+        });
     });
 
-    it("should not crash if the indirection file points to invalid file", () => {
-        //@ts-expect-error shouldn't be allowed to pass a file name 🤫
-        assert.deepStrictEqual(getOneAgentMetadata("indirection_to_invalid.json"), []);
+    describe("when the indirection points to an invalid json file", () => {
+        beforeEach(() => {
+            mock({
+                "dt_metadata_e617c525669e072eebe3d0f08212e8f2.json": "invalid.json",
+                "invalid.json": "this is not json"
+            });
+        });
+
+        it("should not crash", () => {
+            assert.deepStrictEqual(getDynatraceMetadata(), []);
+        });
     });
 
-    it("should read json properties from the file", () => {
-        //@ts-expect-error shouldn't be allowed to pass a file name 🤫
-        assert.deepStrictEqual(getOneAgentMetadata("indirection_to_valid.json"), [{ key: "property1", value: "value1" }]);
+    describe("when the indirection file points to a valid json file", () => {
+        beforeEach(() => {
+            mock({
+                "dt_metadata_e617c525669e072eebe3d0f08212e8f2.json": "valid.json",
+                "valid.json": JSON.stringify({ property1: "value1" })
+            });
+        });
+
+        it("should read metadata", () => {
+            assert.deepStrictEqual(getDynatraceMetadata(), [{ key: "property1", value: "value1" }]);
+        });
     });
 });
+
