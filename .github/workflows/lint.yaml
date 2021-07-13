@@ -13,11 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Lint markdown files
-        uses: docker://avtodev/markdown-lint:v1
-        with:
-          args: "./**/*.md"
-
       - name: Install dependencies
         run: npm install
 
