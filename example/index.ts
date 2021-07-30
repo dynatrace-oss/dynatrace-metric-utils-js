@@ -25,7 +25,7 @@ const factory = new MetricFactory({
 });
 
 const gauge = factory.createGauge("my_gauge", [{ key: "metric_dimension_key", value: "and value" }], 23, new Date());
-const deltaCounter = factory.createCounter("my_counter", [{ key: "metric_dimension_key", value: "and value" }], 23, new Date());
+const deltaCounter = factory.createCounterDelta("my_counter", [{ key: "metric_dimension_key", value: "and value" }], 23, new Date());
 const summary = factory.createSummary("my_counter", [{ key: "metric_dimension_key", value: "and value" }], { min: 3, max: 32, count: 12, sum: 53 }, new Date());
 
 console.log("Dynatrace API Constants:");

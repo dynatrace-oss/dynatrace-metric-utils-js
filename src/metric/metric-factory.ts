@@ -51,7 +51,7 @@ export class MetricFactory {
      * If no explicit timestamp is provided, the server will use the current time when
      * the metric is ingested.
      */
-    public createCounter(name: string, dimensions: Dimension[], value: number, timestamp?: Date): Metric | null {
+    public createCounterDelta(name: string, dimensions: Dimension[], value: number, timestamp?: Date): Metric | null {
         const key = normalizeMetricKey(this._getKey(name));
         if (!key) {
             return null;
