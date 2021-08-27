@@ -41,7 +41,7 @@ Every metric is serializable using its `metric.serialize()` method, which return
 
 ### Dynatrace Metadata Enrichment
 
-When run on a host which has an active OneAgent, the exported function `getDyntraceMetadata` will return a list of dimensions provided by Dynatrace.
+When run on a host which has an active OneAgent, the exported function `getDynatraceMetadata` will return a list of dimensions provided by Dynatrace.
 If no metadata is found, it will return an empty list.
 More information on the underlying feature that is used by the library can be found in the
 [Dynatrace documentation](https://www.dynatrace.com/support/help/how-to-use-dynatrace/metrics/metric-ingestion/ingestion-methods/enrich-metrics/) provided by Dynatrace.
