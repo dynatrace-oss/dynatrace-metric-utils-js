@@ -45,7 +45,6 @@ When run on a host which has an active OneAgent, the exported function `getDyntr
 If no metadata is found, it will return an empty list.
 More information on the underlying feature that is used by the library can be found in the
 [Dynatrace documentation](https://www.dynatrace.com/support/help/how-to-use-dynatrace/metrics/metric-ingestion/ingestion-methods/enrich-metrics/) provided by Dynatrace.
-If no metadata is found, it will return an empty list.
 
 ### Common constants
 
