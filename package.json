@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Utility library for interacting with the Dynatrace metrics API v2",
   "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "compile": "tsc",
     "test": "nyc ts-mocha -p tsconfig.json 'test/**/*.test.ts'",
