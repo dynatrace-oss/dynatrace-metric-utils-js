@@ -1,6 +1,6 @@
 {
   "name": "@dynatrace/metric-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Utility library for interacting with the Dynatrace metrics API v2",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",

@@ -18,6 +18,6 @@ import { BaseMetric } from "./base";
 
 export class Gauge extends BaseMetric<number> {
     protected serializeValue(): string {
-        return `gauge,${this.value}`;
+        return `gauge,${Number(this.value)}`;
     }
 }

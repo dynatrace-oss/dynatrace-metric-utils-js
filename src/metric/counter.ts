@@ -17,6 +17,6 @@ limitations under the License.
 import { BaseMetric } from "./base";
 export class Counter extends BaseMetric<number> {
     protected serializeValue(): string {
-        return `count,delta=${this.value}`;
+        return `count,delta=${Number(this.value)}`;
     }
 }

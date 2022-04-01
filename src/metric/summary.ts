@@ -18,7 +18,7 @@ import { BaseMetric } from "./base";
 
 export class Summary extends BaseMetric<SummaryValue> {
     protected serializeValue(): string {
-        return `gauge,min=${this.value.min},max=${this.value.max},sum=${this.value.sum},count=${this.value.count}`;
+        return `gauge,min=${Number(this.value.min)},max=${Number(this.value.max)},sum=${Number(this.value.sum)},count=${Number(this.value.count)}`;
     }
 }
 

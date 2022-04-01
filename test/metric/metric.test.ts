@@ -22,20 +22,38 @@ const testDate = new Date(1624028522292);
 describe("Metric", () => {
     describe("Counter", () => {
         it("should serialize a value", () => {
-            const ctr = new Counter("key", [], 1, testDate);
-            assert.strictEqual(ctr.serialize(), "key count,delta=1 1624028522292");
+            const metric = new Counter("key", [], 1, testDate);
+            assert.strictEqual(metric.serialize(), "key count,delta=1 1624028522292");
+        });
+
+        it("should make a best effort with non-numeric input", () => {
+            // @ts-expect-error non-numeric input
+            const metric = new Counter("key", [], "3", testDate);
+            assert.strictEqual(metric.serialize(), "key count,delta=3 1624028522292");
         });
     });
     describe("Gauge", () => {
         it("should serialize a value", () => {
-            const ctr = new Gauge("key", [], 1, testDate);
-            assert.strictEqual(ctr.serialize(), "key gauge,1 1624028522292");
+            const metric = new Gauge("key", [], 1, testDate);
+            assert.strictEqual(metric.serialize(), "key gauge,1 1624028522292");
+        });
+
+        it("should make a best effort with non-numeric input", () => {
+            // @ts-expect-error non-numeric input
+            const metric = new Gauge("key", [], "3", testDate);
+            assert.strictEqual(metric.serialize(), "key gauge,3 1624028522292");
         });
     });
     describe("Summary", () => {
         it("should serialize a value", () => {
-            const ctr = new Summary("key", [], { min: 1, max: 10, sum: 34, count: 42 }, testDate);
-            assert.strictEqual(ctr.serialize(), "key gauge,min=1,max=10,sum=34,count=42 1624028522292");
+            const metric = new Summary("key", [], { min: 1, max: 10, sum: 34, count: 42 }, testDate);
+            assert.strictEqual(metric.serialize(), "key gauge,min=1,max=10,sum=34,count=42 1624028522292");
+        });
+
+        it("should make a best effort with non-numeric input", () => {
+            // @ts-expect-error non-numeric input
+            const metric = new Summary("key", [], { min: "1", max: "10", sum: "34", count: "42" }, testDate);
+            assert.strictEqual(metric.serialize(), "key gauge,min=1,max=10,sum=34,count=42 1624028522292");
         });
     });
 });
