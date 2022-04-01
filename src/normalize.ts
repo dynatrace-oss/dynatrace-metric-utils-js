@@ -54,7 +54,7 @@ export function normalizeMetricKey(name: string): string | null {
 
 export function normalizeDimensionKey(key: string): string | null {
     const normalizedSections = key
-        .substr(0, DIMENSION_KEY_MAX_LENGTH)
+        .substring(0, DIMENSION_KEY_MAX_LENGTH)
         .split(".")
         .map(normalizeDimensionKeySection)
         .filter(s => s.length);
