@@ -17,6 +17,8 @@ limitations under the License.
 import { Dimension, Metric } from "./types";
 
 export abstract class BaseMetric<T> implements Metric {
+    private static metricLineMaxLength = 50_000;
+
     protected key: string;
     protected dimensions: Dimension[];
     protected value: T;
@@ -29,7 +31,7 @@ export abstract class BaseMetric<T> implements Metric {
         this.timestamp = timestamp;
     }
 
-    public serialize(): string {
+    public serialize(): string | null {
         let line = this.key;
         if (this.dimensions.length > 0) {
             line = `${line},${this.dimensions.map(({ key, value }) => `${key}=${value}`).join(",")}`;
@@ -39,6 +41,9 @@ export abstract class BaseMetric<T> implements Metric {
 
         if (this.timestamp != null) {
             line = `${line} ${this.timestamp.valueOf()}`;
+        }
+        if (line.length > BaseMetric.metricLineMaxLength) {
+            return null;
         }
 
         return line;
