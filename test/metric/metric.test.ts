@@ -56,7 +56,7 @@ describe("Metric", () => {
             assert.strictEqual(metric.serialize(), "key gauge,min=1,max=10,sum=34,count=42 1624028522292");
         });
     });
-    describe("Too many dimensions", () => {
+    describe("with too many dimensions", () => {
         it("should return null", () => {
             // 50_000 chars line maximum, 'dim0=val0' (shortest serialized dimension) = 9 chars
             const numDimensions = 50_000 / 9;
