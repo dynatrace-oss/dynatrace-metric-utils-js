@@ -16,9 +16,9 @@ limitations under the License.
 
 import { Dimension, Metric } from "./types";
 
-export abstract class BaseMetric<T> implements Metric {
-    private static metricLineMaxLength = 50_000;
+const METRIC_LINE_MAX_LENGTH = 50_000;
 
+export abstract class BaseMetric<T> implements Metric {
     protected key: string;
     protected dimensions: Dimension[];
     protected value: T;
@@ -42,7 +42,7 @@ export abstract class BaseMetric<T> implements Metric {
         if (this.timestamp != null) {
             line = `${line} ${this.timestamp.valueOf()}`;
         }
-        if (line.length > BaseMetric.metricLineMaxLength) {
+        if (line.length > METRIC_LINE_MAX_LENGTH) {
             return null;
         }
 
