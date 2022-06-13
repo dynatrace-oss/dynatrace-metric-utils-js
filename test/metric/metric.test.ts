@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import * as assert from "assert";
-import { Counter, Gauge, Summary } from "../../src/metric";
+import { Counter, Dimension, Gauge, Summary } from "../../src/metric";
 
 const testDate = new Date(1624028522292);
 
@@ -54,6 +54,15 @@ describe("Metric", () => {
             // @ts-expect-error non-numeric input
             const metric = new Summary("key", [], { min: "1", max: "10", sum: "34", count: "42" }, testDate);
             assert.strictEqual(metric.serialize(), "key gauge,min=1,max=10,sum=34,count=42 1624028522292");
+        });
+    });
+    describe("with too many dimensions", () => {
+        it("should return null", () => {
+            // 50_000 chars line maximum, 'dim0=val0' (shortest serialized dimension) = 9 chars
+            const numDimensions = 50_000 / 9;
+            const dims = Array.from({ length: numDimensions }, (_, i) => i).map(i => <Dimension>{ key: `dim${i}`, value: `val${i}` });
+            const metric = new Counter("key", dims, 3, testDate);
+            assert.strictEqual(metric.serialize(), null);
         });
     });
 });

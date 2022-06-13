@@ -20,5 +20,5 @@ export interface Dimension {
 }
 
 export interface Metric {
-    serialize(): string;
+    serialize(): string | null;
 }
